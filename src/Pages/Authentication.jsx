@@ -53,7 +53,7 @@ const Authentication = () => {
       );
       if (data._id) {
         sessionStorage.setItem("uid", data._id);
-        navigate("/");
+        navigate("/real-time-chat");
       }
       console.log(data);
     } catch (err) {

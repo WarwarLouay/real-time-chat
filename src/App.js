@@ -7,7 +7,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Chat />} />
+        <Route path="/real-time-chat" element={<Chat />} />
         <Route path="/authentication" element={<Authentication />} />
       </Routes>
     </BrowserRouter>

@@ -161,7 +161,8 @@ const Chat = () => {
 
   //Initial Socket
   React.useEffect(() => {
-    const newSocket = io("http://localhost:5000");
+    // const newSocket = io("http://localhost:5000");
+    const newSocket = io("https://reat-chat-socket.onrender.com");
     setSocket(newSocket);
 
     return () => {
