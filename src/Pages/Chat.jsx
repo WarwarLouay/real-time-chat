@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+
 import React from "react";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
@@ -25,6 +26,8 @@ import {
   ListItemText,
   Badge,
 } from "@mui/material";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
@@ -94,6 +97,7 @@ const Chat = () => {
   const [unreadNotifications, setUnreadNotifications] = React.useState([]);
   const [lastMessage, setLastMessage] = React.useState([]);
   const [socket, setSocket] = React.useState(null);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -116,6 +120,7 @@ const Chat = () => {
       console.log(response);
       if (response) {
         callPage();
+        updateCurrentChat(user);
       }
       onClose(user);
     };
@@ -235,6 +240,7 @@ const Chat = () => {
   }, []);
 
   const callPage = async () => {
+    setIsLoading(true);
     const notifi = await request.get("notification");
     setUnreadNotifications(notifi.data);
     console.log(notifi);
@@ -273,6 +279,7 @@ const Chat = () => {
       getLatestMessage();
     });
     setLastMessage(latestMessage);
+    setIsLoading(false);
   };
 
   const trancateText = (text) => {
@@ -299,6 +306,7 @@ const Chat = () => {
   };
 
   const updateCurrentChat = async (user) => {
+    setIsLoading(true);
     setSelectedUser(user);
     const filterChats = Chats.filter((chat) =>
       chat.members.includes(uid && user._id)
@@ -324,6 +332,7 @@ const Chat = () => {
 
     const filN = notifications.filter((not) => not.isRead === false);
     setUnreadNotifications(filN);
+    setIsLoading(false);
   };
 
   const handleSendMessage = async () => {
@@ -341,7 +350,7 @@ const Chat = () => {
   };
 
   return (
-    <div>
+    <div className="body">
       <Grid container spacing={0}>
         <Grid item xs={12} md={4} className={selectedUser ? "hide" : ""}>
           <Item
@@ -351,6 +360,7 @@ const Chat = () => {
               overflow: "auto",
               borderRadius: "0",
             }}
+            className="body"
           >
             <Paper
               component="form"
@@ -440,21 +450,27 @@ const Chat = () => {
                   onClick={() => updateCurrentChat(user)}
                 >
                   <Stack direction="row" spacing={2}>
-                    {onlineUsers.some((u) => u.uid === user._id) ? (
-                      <Stack direction="row">
-                        <StyledBadge
-                          overlap="circular"
-                          anchorOrigin={{
-                            vertical: "bottom",
-                            horizontal: "right",
-                          }}
-                          variant="dot"
-                        >
-                          <Avatar>
-                            <PersonIcon />
-                          </Avatar>
-                        </StyledBadge>
-                      </Stack>
+                    {onlineUsers ? (
+                      onlineUsers.some((u) => u.uid === user._id) ? (
+                        <Stack direction="row">
+                          <StyledBadge
+                            overlap="circular"
+                            anchorOrigin={{
+                              vertical: "bottom",
+                              horizontal: "right",
+                            }}
+                            variant="dot"
+                          >
+                            <Avatar>
+                              <PersonIcon />
+                            </Avatar>
+                          </StyledBadge>
+                        </Stack>
+                      ) : (
+                        <Avatar>
+                          <PersonIcon />
+                        </Avatar>
+                      )
                     ) : (
                       <Avatar>
                         <PersonIcon />
@@ -488,6 +504,7 @@ const Chat = () => {
                 backgroundColor: "#FBFCFC",
                 borderRadius: "0",
               }}
+              className="body"
             >
               <Paper
                 component="form"
@@ -596,6 +613,15 @@ const Chat = () => {
           <br />
           <SimpleDialog open={open} onClose={handleClose} />
         </div>
+
+        {isLoading && (
+          <Backdrop
+            sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+            open={isLoading}
+          >
+            <CircularProgress color="inherit" />
+          </Backdrop>
+        )}
       </Grid>
     </div>
   );

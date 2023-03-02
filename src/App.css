@@ -104,4 +104,17 @@ body {
     display: flex !important;
     align-items: center !important;
   }
+
+  .body {
+    height: 90vh !important;
+    width: 100vw !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .chat-body{
+    height: calc(90vh - (45px + 85px));
+  }
 }
