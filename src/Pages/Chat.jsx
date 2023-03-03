@@ -526,7 +526,7 @@ const Chat = () => {
                 <Stack direction="row" spacing={2}>
                   <div
                     className="arrowBack"
-                    style={{ alignItems: "center", display: "flex" }}
+                    style={{ alignItems: "center", display: "flex", position: "fixed" }}
                   >
                     <ArrowBackIcon
                       onClick={() => {
