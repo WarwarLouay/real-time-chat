@@ -481,7 +481,7 @@ const Chat = () => {
 
                     <div style={{ textAlign: "start" }}>
                       <h3>{user.fullName ? user.fullName : user.email}</h3>
-                      <p>{trancateText("Hey their, I'm using chat app")}</p>
+                      <p>{user.status ? trancateText(user.status) : trancateText("Hey their, I'm using chat app")}</p>
                     </div>
                     {filterUserNotification.length > 0 && (
                       <div style={{ alignItems: "center" }}>
