@@ -119,6 +119,9 @@ const Authentication = () => {
     const data = { uid, fullName, status };
     const response = await request.updateProfile(data);
     console.log(response);
+    if(response) {
+      navigate("/real-time-chat");
+    }
   };
 
   return (
