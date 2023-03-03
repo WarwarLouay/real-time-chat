@@ -136,7 +136,9 @@ const Chat = () => {
                     <PersonIcon />
                   </Avatar>
                 </ListItemAvatar>
-                <ListItemText primary={user.email} />
+                <ListItemText
+                  primary={user.fullName ? user.fullName : user.email}
+                />
               </ListItemButton>
             </ListItem>
           ))}
@@ -478,7 +480,7 @@ const Chat = () => {
                     )}
 
                     <div style={{ textAlign: "start" }}>
-                      <h3>{user.fullName}</h3>
+                      <h3>{user.fullName ? user.fullName : user.email}</h3>
                       <p>{trancateText("Hey their, I'm using chat app")}</p>
                     </div>
                     {filterUserNotification.length > 0 && (
@@ -533,7 +535,11 @@ const Chat = () => {
                     <PersonIcon />
                   </Avatar>
                   <div style={{ textAlign: "start" }}>
-                    <h3>{selectedUser.fullName}</h3>
+                    <h3>
+                      {selectedUser.fullName
+                        ? selectedUser.fullName
+                        : selectedUser.email}
+                    </h3>
                     {onlineUsers.some((u) => u.uid === selectedUser._id) ? (
                       <p>Online</p>
                     ) : (
