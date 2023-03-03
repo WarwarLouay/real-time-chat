@@ -16,8 +16,11 @@ import {
   Center,
 } from "@mantine/core";
 import OTPInput from "otp-input-react";
+import { styled } from "@mui/material/styles";
 import Avatar from "@mui/material/Avatar";
 import PersonIcon from "@mui/icons-material/Person";
+import AddIcon from "@mui/icons-material/Add";
+import Badge from "@mui/material/Badge";
 
 const useStyles = createStyles((theme) => ({
   title: {
@@ -40,6 +43,12 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
+const SmallAvatar = styled(Avatar)(({ theme }) => ({
+  width: 22,
+  height: 22,
+  border: `2px solid ${theme.palette.background.paper}`,
+}));
+
 const Authentication = () => {
   const { classes } = useStyles();
   const navigate = useNavigate();
@@ -53,6 +62,8 @@ const Authentication = () => {
   const [seconds, setSeconds] = React.useState(30);
   const [fullName, setFullName] = React.useState("");
   const [status, setStatus] = React.useState("Hey their, I'm using chat app");
+  const [image, setImage] = React.useState("");
+  const [imageSrc, setImageSrc] = React.useState("");
 
   React.useEffect(() => {
     if (activeCard === "otpCard") {
@@ -207,17 +218,80 @@ const Authentication = () => {
         <div>
           <Container size={460} my={30}>
             <Paper withBorder shadow="md" p={30} radius="md" mt="xl">
-              <Avatar
-                style={{
-                  width: "100px",
-                  height: "100px",
-                  position: "relative",
-                  left: "50%",
-                  transform: "translateX(-50%)",
+              {imageSrc ? (
+                <Badge
+                  overlap="circular"
+                  anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                  style={{
+                    width: "100px",
+                    height: "100px",
+                    position: "relative",
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                  }}
+                  badgeContent={
+                    <label htmlFor="file" style={{ cursor: "pointer" }}>
+                      <SmallAvatar>
+                        <AddIcon />
+                      </SmallAvatar>
+                    </label>
+                  }
+                >
+                  <Avatar
+                    style={{
+                      width: "100px",
+                      height: "100px",
+                      position: "relative",
+                      left: "50%",
+                      transform: "translateX(-50%)",
+                    }}
+                    src={imageSrc}
+                  />
+                </Badge>
+              ) : (
+                <Badge
+                  overlap="circular"
+                  anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                  style={{
+                    width: "100px",
+                    height: "100px",
+                    position: "relative",
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                  }}
+                  badgeContent={
+                    <label htmlFor="file" style={{ cursor: "pointer" }}>
+                      <SmallAvatar>
+                        <AddIcon />
+                      </SmallAvatar>
+                    </label>
+                  }
+                >
+                  <Avatar
+                    style={{
+                      width: "100px",
+                      height: "100px",
+                      position: "relative",
+                      left: "50%",
+                      transform: "translateX(-50%)",
+                    }}
+                  >
+                    <PersonIcon style={{ width: "100px", height: "100px" }} />
+                  </Avatar>
+                </Badge>
+              )}
+              <input
+                type="file"
+                id="file"
+                style={{ display: "none" }}
+                accept=".png, .jpg, .jpeg"
+                onChange={(e) => {
+                  setImage(e.target.files);
+                  const file = e.target.files[0];
+                  if (!file) return;
+                  setImageSrc(URL.createObjectURL(file));
                 }}
-              >
-                <PersonIcon style={{ width: "100px", height: "100px" }} />
-              </Avatar>
+              />
               <TextInput
                 label="Your name"
                 placeholder="Louay Warwar"
