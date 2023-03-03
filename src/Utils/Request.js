@@ -63,6 +63,21 @@ class Request {
     const link = "/api/lastmessage/" + chatId;
     return await this.api.get(link);
   }
+
+  async verifyCode(data) {
+    const link = "/api/user/verifycode";
+    return await this.api.post(link, data);
+  }
+
+  async resendCode(data) {
+    const link = "/api/user/resendcode";
+    return await this.api.post(link, data);
+  }
+
+  async updateProfile(data) {
+    const link = "/api/user/update";
+    return await this.api.post(link, data);
+  }
 }
 
 export default Request;
