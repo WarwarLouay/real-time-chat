@@ -120,6 +120,7 @@ const Authentication = () => {
     const response = await request.updateProfile(data);
     console.log(response);
     if(response) {
+      sessionStorage.setItem("uid", userInfo._id);
       navigate("/real-time-chat");
     }
   };
