@@ -119,7 +119,7 @@ const Authentication = () => {
     const data = { uid, fullName, status };
     const response = await request.updateProfile(data);
     console.log(response);
-    if(response) {
+    if (response) {
       sessionStorage.setItem("uid", userInfo._id);
       navigate("/real-time-chat");
     }
@@ -143,7 +143,7 @@ const Authentication = () => {
                 placeholder="example@domain.com"
                 required
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => setEmail(e.target.value.toLowerCase())}
               />
               <Group position="apart" mt="lg" className={classes.controls}>
                 <Anchor color="dimmed" size="sm" className={classes.control}>
