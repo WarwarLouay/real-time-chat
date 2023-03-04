@@ -117,4 +117,8 @@ body {
   .chat-body{
     height: calc(90vh - (45px + 85px));
   }
+
+  .chatHead {
+    position: fixed;
+  }
 }

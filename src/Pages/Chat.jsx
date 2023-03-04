@@ -98,6 +98,7 @@ const Chat = () => {
   const [lastMessage, setLastMessage] = React.useState([]);
   const [socket, setSocket] = React.useState(null);
   const [isLoading, setIsLoading] = React.useState(false);
+  const [typingUser, setTypingUser] = React.useState(null);
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -191,6 +192,25 @@ const Chat = () => {
       socket.off("getOnlineUsers");
     };
   }, [socket]);
+
+  //Typing Users
+  React.useEffect(() => {
+    if (socket === null) return;
+    socket.emit("onTyping", uid);
+
+    socket.on("getOnTyping", (res) => {
+      setTypingUser(res);
+      setTimeout(() => {
+        setTypingUser(null);
+      }, 1500);
+    });
+
+    setTypingUser(null);
+
+    return () => {
+      socket.off("getOnTyping");
+    };
+  }, [currentMessage]);
 
   //Send Message
   React.useEffect(() => {
@@ -510,7 +530,7 @@ const Chat = () => {
                 backgroundColor: "#FBFCFC",
                 borderRadius: "0",
               }}
-              className="body"
+              className="body chatHead"
             >
               <Paper
                 component="form"
@@ -544,7 +564,9 @@ const Chat = () => {
                         ? selectedUser.fullName
                         : selectedUser.email}
                     </h3>
-                    {onlineUsers.some((u) => u.uid === selectedUser._id) ? (
+                    {typingUser && typingUser === selectedUser._id ? (
+                      <p>typing...</p>
+                    ) : onlineUsers.some((u) => u.uid === selectedUser._id) ? (
                       <p>Online</p>
                     ) : (
                       <p>Offline</p>
